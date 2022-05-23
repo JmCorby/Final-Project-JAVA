@@ -24,19 +24,19 @@ public class Customer {
 	@Id
 	@Column(name = "id")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private long id;
+	public long id;
 
 	@Column(name = "first_name")
-	private String firstName;
+	public String firstName;
 
 	@Column(name = "last_name")
-	private String lastName;
+	public String lastName;
 
 	@Column(name = "occupation")
-	private String occupation;
+	public String occupation;
 
 	@Column(name = "salary")
-	private double salary;
+	public double salary;
 
 	public long getId() {
 		return id;
@@ -70,12 +70,12 @@ public class Customer {
 		this.occupation = occupation;
 	}
 
-	public double getIncome() {
+	public double getSalary() {
 		return salary;
 	}
 
-	public void setIncome(double income) {
-		this.salary = income;
+	public void setSalary(double salary) {
+		this.salary = salary;
 	}
 
 }

@@ -6,4 +6,6 @@ import com.jmpc.app.loanpayment.models.Loan;
 
 public interface LoanRepo extends JpaRepository <Loan, Long>{
 
+	Loan findByCustomerId(long customer_id);
+
 }

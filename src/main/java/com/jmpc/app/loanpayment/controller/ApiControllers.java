@@ -1,12 +1,12 @@
 package com.jmpc.app.loanpayment.controller;
 
+import java.time.LocalDateTime;
 import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -19,6 +19,7 @@ import com.jmpc.app.loanpayment.models.Loan;
 import com.jmpc.app.loanpayment.models.TransactionRecord;
 
 @RestController
+@CrossOrigin
 public class ApiControllers {
 
 	@Autowired
@@ -46,17 +47,20 @@ public class ApiControllers {
 		return customerRepo.findById(id).orElse(null);
 	}
 
-	@PostMapping(value = "/savecustomer")
-	public String saveCustomer(@RequestBody Customer customer) {
-		customerRepo.save(customer);
-		return "Saved...";
-	}
 	
-//	@GetMapping(value = "/confirmcustomer/{lastName}/{firstName}")
-//	@ResponseBody
-//	public List<Customer> getCustomer(@PathVariable("lastName") String lastName, @PathVariable("firstName") String firstName) {
-//		return customerRepo.findAll();
-//	}
+	@PostMapping(value = "/customers/getbyname")
+	public Customer getCustomerByName(@RequestBody Customer customer) {
+		
+	Customer first = customerRepo.findByFirstNameAndLastName(customer.firstName, customer.lastName).stream().findFirst().orElse(null);
+		
+		if(first != null) {
+			return first;
+		} else {
+			customerRepo.save(customer);
+			return customer;
+		}
+		
+	}
 
 	// Loan methods
 	@GetMapping(value = "/allowloan/{salary}/{totalLoanAmount}")
@@ -76,22 +80,56 @@ public class ApiControllers {
 
 	@GetMapping(value = "/loans")
 	public List<Loan> getLoans() {
-		return loanRepo.findAll();
+		try {
+			var result = loanRepo.findAll();
+			return result; 
+		}
+		catch (Exception e) {
+			return null;
+		}
 	}
-
-	@PutMapping(value = "/updateloan/{id}")
-	public Loan updateLoan(@PathVariable("id") long id, @RequestBody Loan loan) {
-		Loan loanToUpdate = loanRepo.findById(id).get();
-		loanToUpdate.setLoanValue(loan);
-		loanToUpdate = loanRepo.save(loanToUpdate);
-		return loanToUpdate;
+	
+//new
+//	@PostMapping(value = "/saveloan")
+//	public Loan saveLoan(@RequestBody Loan loan, @PathVariable("id") long id) {
+//		Loan loanToSave = loanRepo.findById(id).get();
+//		loanToSave.setLoanValue(loan);
+//		loanToSave = loanRepo.save(loanToSave);
+//		return loanToSave;
+//	}
+	
+	@PostMapping(value = "saveloan")
+	public Loan saveLoan(@RequestBody Loan loan) {
+		var customer = customerRepo.findById(loan.customer.id).orElse(null);
+		loan.customer = customer;
+		return loanRepo.save(loan);
 	}
+	
+	
+//	@PutMapping(value = "/updateloan/{id}")
+//	public Loan updateLoan(@PathVariable("id") long id, @RequestBody Loan loan) {
+//		Loan loanToUpdate = loanRepo.findById(id).get();
+//		loanToUpdate.setLoanValue(loan);
+//		loanToUpdate = loanRepo.save(loanToUpdate);
+//		return loanToUpdate;
+//	}
 
 	// Transaction Records methods
-	@PostMapping(value = "/savetransaction")
-	public String saveTransactionRecord(@RequestBody TransactionRecord transactionRecord) {
-		transactionRecordRepo.save(transactionRecord);
-		return "Saved...";
+	@GetMapping(value = "/gettransactions")
+	public List<TransactionRecord> getTransactionRecord() {
+		return transactionRecordRepo.findAll();
 	}
+
+	
+	@PostMapping(value = "/savetransaction")
+	public TransactionRecord transactionRecord (@RequestBody TransactionRecord transactionRecord) {
+		var customer = customerRepo.findById(transactionRecord.getCustomer().id).orElse(null);
+		var loan = loanRepo.findById(transactionRecord.getLoan().id).orElse(null);
+		transactionRecord.setCustomer(customer);
+		transactionRecord.setLoan(loan);
+		transactionRecord.transactionDate = LocalDateTime.now();
+		return transactionRecordRepo.save(transactionRecord);
+	}
+	
 
 }

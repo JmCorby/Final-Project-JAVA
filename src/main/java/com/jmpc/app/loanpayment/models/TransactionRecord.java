@@ -1,5 +1,7 @@
 package com.jmpc.app.loanpayment.models;
 
+import java.time.LocalDateTime;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -22,20 +24,16 @@ public class TransactionRecord {
 	@PrimaryKeyJoinColumn(name = "loan_id", referencedColumnName = "id")
 	private Loan loan;
 
-//	@OneToOne(cascade = CascadeType.ALL)
-//	@JoinColumn(name = "loan_id", referencedColumnName = "id")
-//	private Loan loan; 
-
 	@Id
 	@Column(name = "id")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private long id;
+	public long id;
 
 	@Column(name = "amount_paid")
-	private double amountPaid;
+	public double amountPaid;
 
 	@Column(name = "transaction_date")
-	private String transactionDate;
+	public LocalDateTime transactionDate;
 
 	public Customer getCustomer() {
 		return customer;
@@ -52,34 +50,34 @@ public class TransactionRecord {
 	public void setLoan(Loan loan) {
 		this.loan = loan;
 	}
-
-	public long getId() {
-		return id;
-	}
-
-	public void setId(long id) {
-		this.id = id;
-	}
-
-	public double getamountPaid() {
-		return amountPaid;
-	}
-
-	public void setAmountPaid(double amountPaid) {
-		this.amountPaid = amountPaid;
-	}
-
-	public String getTransactionDate() {
-		return transactionDate;
-	}
-
-	public void setTransactionDate(String transactionDate) {
-		this.transactionDate = transactionDate;
-	}
-
-//	public void setTransactionRecordValue(TransactionRecord transactionRecord) {
-//		this.amountPaid = transactionRecord.amountPaid;
-//		this.transactionDate = transactionRecord.transactionDate;
+//
+//	public long getId() {
+//		return id;
 //	}
+//
+//	public void setId(long id) {
+//		this.id = id;
+//	}
+//
+//	public double getamountPaid() {
+//		return amountPaid;
+//	}
+//
+//	public void setAmountPaid(double amountPaid) {
+//		this.amountPaid = amountPaid;
+//	}
+//
+//	public String getTransactionDate() {
+//		return transactionDate;
+//	}
+//
+//	public void setTransactionDate(String transactionDate) {
+//		this.transactionDate = transactionDate;
+//	}
+
+	public void setTransactionRecordValue(TransactionRecord transactionRecord) {
+		this.amountPaid = transactionRecord.amountPaid;
+		this.transactionDate = transactionRecord.transactionDate;
+	}
 
 }

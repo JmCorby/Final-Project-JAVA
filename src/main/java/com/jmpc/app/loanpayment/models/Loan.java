@@ -19,7 +19,7 @@ public class Loan {
 
 	@ManyToOne
 	@PrimaryKeyJoinColumn(name = "customer_id", referencedColumnName = "id")
-	private Customer customer;
+	public Customer customer;
 
 	@OneToMany(mappedBy = "id", cascade = CascadeType.ALL)
 	private List<TransactionRecord> transactionRecords;
@@ -27,16 +27,17 @@ public class Loan {
 	@Id
 	@Column(name = "id")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private long id;
+	public long id;
 
 	@Column(name = "loan_amount")
-	private double loanAmount;
+	public double loanAmount;
 
 	@Column(name = "balance")
-	private double balance;
+	public double balance;
 
 	@Column(name = "months_to_pay")
-	private String monthsToPay;
+	public String monthsToPay;
+	
 
 	public Customer getCustomer() {
 		return customer;
@@ -48,10 +49,6 @@ public class Loan {
 
 //	public List<TransactionRecord> getTransactionRecord() {
 //		return transactionRecords;
-//	}
-
-//	public void setTransactionRecord(TransactionRecord transactionRecord) {
-//		this.transactionRecord = transactionRecord;
 //	}
 
 	public long getId() {
