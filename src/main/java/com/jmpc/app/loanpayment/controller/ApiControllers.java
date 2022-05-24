@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.jmpc.app.loanpayment.Repo.CustomerRepo;
@@ -42,10 +41,10 @@ public class ApiControllers {
 		return customerRepo.findAll();
 	}
 
-	@GetMapping(value = "/customers/{id}")
-	public Customer getCustomer(@PathVariable("id") long id) {
-		return customerRepo.findById(id).orElse(null);
-	}
+//	@GetMapping(value = "/customers/{id}")
+//	public Customer getCustomer(@PathVariable("id") long id) {
+//		return customerRepo.findById(id).orElse(null);
+//	}
 
 	
 	@PostMapping(value = "/customers/getbyname")
@@ -63,16 +62,16 @@ public class ApiControllers {
 	}
 
 	// Loan methods
-	@GetMapping(value = "/allowloan/{salary}/{totalLoanAmount}")
-	@ResponseBody
-	public boolean getLoan(@PathVariable("salary") double salary, @PathVariable("totalLoanAmount") double loanAmount) {
-		if (salary * 0.8 >= loanAmount) {
-			return true;
-		} else {
-			return false;
-		}
-	}
-	
+//	@GetMapping(value = "/allowloan/{salary}/{totalLoanAmount}")
+//	@ResponseBody
+//	public boolean getLoan(@PathVariable("salary") double salary, @PathVariable("totalLoanAmount") double loanAmount) {
+//		if (salary * 0.8 >= loanAmount) {
+//			return true;
+//		} else {
+//			return false;
+//		}
+//	}
+//	
 	@GetMapping(value = "/loans/{id}")
 	public Loan getloan(@PathVariable("id") long id) {
 		return loanRepo.findById(id).orElse(null);
@@ -128,8 +127,20 @@ public class ApiControllers {
 		transactionRecord.setCustomer(customer);
 		transactionRecord.setLoan(loan);
 		transactionRecord.transactionDate = LocalDateTime.now();
+		var transactions = transactionRecordRepo.findByLoanId(loan.id);
+		double totalAmountPaid = 0;
+		for (var transaction : transactions) {
+			totalAmountPaid += transaction.amountPaid;
+		}
+		double balance = loan.loanAmount - totalAmountPaid - transactionRecord.amountPaid;
+		loan.balance = balance;
+		loanRepo.save(loan);
 		return transactionRecordRepo.save(transactionRecord);
 	}
 	
+	@GetMapping(value = "/gettransactions/{loanId}")
+	public List<TransactionRecord> getTransactionRecordByLoanId(@PathVariable("loanId") long loanId) {
+		return transactionRecordRepo.findByLoanId(loanId);
+	}
 
 }
