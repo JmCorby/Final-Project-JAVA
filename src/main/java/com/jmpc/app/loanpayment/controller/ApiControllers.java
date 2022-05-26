@@ -41,7 +41,6 @@ public class ApiControllers {
 		return customerRepo.findAll();
 	}
 
-	
 	@PostMapping(value = "/customers/getbyname")
 	public Customer getCustomerByName(@RequestBody Customer customer) {
 		
@@ -53,9 +52,9 @@ public class ApiControllers {
 			customerRepo.save(customer);
 			return customer;
 		}
-		
 	}
 
+	// Loan Methods
 	@GetMapping(value = "/loans/{id}")
 	public Loan getloan(@PathVariable("id") long id) {
 		return loanRepo.findById(id).orElse(null);
@@ -72,7 +71,6 @@ public class ApiControllers {
 		}
 	}
 	
-	
 	@PostMapping(value = "saveloan")
 	public Loan saveLoan(@RequestBody Loan loan) {
 		var customer = customerRepo.findById(loan.customer.id).orElse(null);
@@ -80,13 +78,11 @@ public class ApiControllers {
 		return loanRepo.save(loan);
 	}
 	
-
 	// Transaction Records methods
-	@GetMapping(value = "/gettransactions")
-	public List<TransactionRecord> getTransactionRecord() {
-		return transactionRecordRepo.findAll();
+	@GetMapping(value = "/gettransactions/{loanId}")
+	public List<TransactionRecord> getTransactionRecordByLoanId(@PathVariable("loanId") long loanId) {
+		return transactionRecordRepo.findByLoanId(loanId);
 	}
-
 	
 	@PostMapping(value = "/savetransaction")
 	public TransactionRecord transactionRecord (@RequestBody TransactionRecord transactionRecord) {
@@ -106,9 +102,6 @@ public class ApiControllers {
 		return transactionRecordRepo.save(transactionRecord);
 	}
 	
-	@GetMapping(value = "/gettransactions/{loanId}")
-	public List<TransactionRecord> getTransactionRecordByLoanId(@PathVariable("loanId") long loanId) {
-		return transactionRecordRepo.findByLoanId(loanId);
-	}
+
 
 }
