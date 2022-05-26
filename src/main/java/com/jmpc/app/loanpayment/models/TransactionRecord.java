@@ -50,30 +50,6 @@ public class TransactionRecord {
 	public void setLoan(Loan loan) {
 		this.loan = loan;
 	}
-//
-//	public long getId() {
-//		return id;
-//	}
-//
-//	public void setId(long id) {
-//		this.id = id;
-//	}
-//
-//	public double getamountPaid() {
-//		return amountPaid;
-//	}
-//
-//	public void setAmountPaid(double amountPaid) {
-//		this.amountPaid = amountPaid;
-//	}
-//
-//	public String getTransactionDate() {
-//		return transactionDate;
-//	}
-//
-//	public void setTransactionDate(String transactionDate) {
-//		this.transactionDate = transactionDate;
-//	}
 
 	public void setTransactionRecordValue(TransactionRecord transactionRecord) {
 		this.amountPaid = transactionRecord.amountPaid;

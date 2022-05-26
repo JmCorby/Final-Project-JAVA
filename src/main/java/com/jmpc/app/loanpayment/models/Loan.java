@@ -47,10 +47,6 @@ public class Loan {
 		this.customer = customer;
 	}
 
-//	public List<TransactionRecord> getTransactionRecord() {
-//		return transactionRecords;
-//	}
-
 	public long getId() {
 		return id;
 	}
