@@ -36,72 +36,75 @@ public class ApiControllers {
 	}
 
 	// Customer methods
-	@GetMapping(value = "/customers")
-	public List<Customer> getCustomers() {
-		return customerRepo.findAll();
-	}
-
-	@PostMapping(value = "/customers/getbyname")
-	public Customer getCustomerByName(@RequestBody Customer customer) {
-		
-	Customer first = customerRepo.findByFirstNameAndLastName(customer.firstName, customer.lastName).stream().findFirst().orElse(null);
-		
-		if(first != null) {
-			return first;
-		} else {
-			customerRepo.save(customer);
-			return customer;
-		}
-	}
+//	@GetMapping(value = "/customers")
+//	public List<Customer> getCustomers() {
+//		return customerRepo.findAll();
+//	}
+//
+//	@PostMapping(value = "/customers/getbyname")
+//	public Customer getCustomerByName(@RequestBody Customer customer) {
+//
+//		Customer first = customerRepo.findByFirstNameAndLastName(customer.firstName, customer.lastName).stream()
+//				.findFirst().orElse(null);
+//
+//		if (first != null) {
+//			return first;
+//		} else {
+//			customerRepo.save(customer);
+//			return customer;
+//		}
+//	}
 
 	// Loan Methods
-	@GetMapping(value = "/loans/{id}")
-	public Loan getloan(@PathVariable("id") long id) {
-		return loanRepo.findById(id).orElse(null);
-	}
+//	@GetMapping(value = "/loans/{id}")
+//	public Loan getloan(@PathVariable("id") long id) {
+//		return loanRepo.findById(id).orElse(null);
+//	}
+//
+//	@GetMapping(value = "/loans")
+//	public List<Loan> getLoans() {
+//		try {
+//			var result = loanRepo.findAll();
+//			return result;
+//		} catch (Exception e) {
+//			return null;
+//		}
+//	}
+//
+//	@PostMapping(value = "saveloan")
+//	public Loan saveLoan(@RequestBody Loan loan) {
+//		var customer = customerRepo.findById(loan.customer.id).orElse(null);
+//		loan.customer = customer;
+//		return loanRepo.save(loan);
+//	}
 
-	@GetMapping(value = "/loans")
-	public List<Loan> getLoans() {
-		try {
-			var result = loanRepo.findAll();
-			return result; 
-		}
-		catch (Exception e) {
-			return null;
-		}
-	}
-	
-	@PostMapping(value = "saveloan")
-	public Loan saveLoan(@RequestBody Loan loan) {
-		var customer = customerRepo.findById(loan.customer.id).orElse(null);
-		loan.customer = customer;
-		return loanRepo.save(loan);
-	}
-	
 	// Transaction Records methods
-	@GetMapping(value = "/gettransactions/{loanId}")
-	public List<TransactionRecord> getTransactionRecordByLoanId(@PathVariable("loanId") long loanId) {
-		return transactionRecordRepo.findByLoanId(loanId);
-	}
-	
-	@PostMapping(value = "/savetransaction")
-	public TransactionRecord transactionRecord (@RequestBody TransactionRecord transactionRecord) {
-		var customer = customerRepo.findById(transactionRecord.getCustomer().id).orElse(null);
-		var loan = loanRepo.findById(transactionRecord.getLoan().id).orElse(null);
-		transactionRecord.setCustomer(customer);
-		transactionRecord.setLoan(loan);
-		transactionRecord.transactionDate = LocalDateTime.now();
-		var transactions = transactionRecordRepo.findByLoanId(loan.id);
-		double totalAmountPaid = 0;
-		for (var transaction : transactions) {
-			totalAmountPaid += transaction.amountPaid;
-		}
-		double balance = loan.loanAmount - totalAmountPaid - transactionRecord.amountPaid;
-		loan.balance = balance;
-		loanRepo.save(loan);
-		return transactionRecordRepo.save(transactionRecord);
-	}
-	
-
+//	@GetMapping(value = "/gettransactions/{loanId}")
+//	public List<TransactionRecord> getTransactionRecordByLoanId(@PathVariable("loanId") long loanId) {
+//		return transactionRecordRepo.findByLoanId(loanId);
+//	}
+//
+//	@PostMapping(value = "/savetransaction")
+//	public TransactionRecord transactionRecord(@RequestBody TransactionRecord transactionRecord) {
+//		var customer = customerRepo.findById(transactionRecord.getCustomer().id).orElse(null);
+//		var loan = loanRepo.findById(transactionRecord.getLoan().id).orElse(null);
+//
+//		transactionRecord.setCustomer(customer);
+//		transactionRecord.setLoan(loan);
+//		transactionRecord.transactionDate = LocalDateTime.now();
+//
+//		var transactions = transactionRecordRepo.findByLoanId(loan.id);
+//		double totalAmountPaid = 0;
+//
+//		for (var transaction : transactions) {
+//			totalAmountPaid += transaction.amountPaid;
+//		}
+//
+//		double balance = loan.loanAmount - totalAmountPaid - transactionRecord.amountPaid;
+//		loan.balance = balance;
+//		loanRepo.save(loan);
+//
+//		return transactionRecordRepo.save(transactionRecord);
+//	}
 
 }
