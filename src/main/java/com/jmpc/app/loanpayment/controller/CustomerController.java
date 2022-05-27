@@ -9,32 +9,24 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.jmpc.app.loanpayment.Repo.CustomerRepo;
 import com.jmpc.app.loanpayment.models.Customer;
+import com.jmpc.app.loanpayment.service.CustomerServiceImpl;
 
 @RestController
 @CrossOrigin
 public class CustomerController {
 	
 	@Autowired
-	private CustomerRepo customerRepo;
+	private CustomerServiceImpl customerService;
 	
 	@GetMapping(value = "/customers")
 	public List<Customer> getCustomers() {
-		return customerRepo.findAll();
+		return customerService.getCustomers();
 	}
 
 	@PostMapping(value = "/customers/getbyname")
 	public Customer getCustomerByName(@RequestBody Customer customer) {
-		
-	Customer first = customerRepo.findByFirstNameAndLastName(customer.firstName, customer.lastName).stream().findFirst().orElse(null);
-		
-		if(first != null) {
-			return first;
-		} else {
-			customerRepo.save(customer);
-			return customer;
-		}
+		return customerService.getCustomerByName(customer);
 	}
 
 }

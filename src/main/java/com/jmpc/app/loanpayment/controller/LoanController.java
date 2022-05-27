@@ -10,40 +10,29 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.jmpc.app.loanpayment.Repo.CustomerRepo;
-import com.jmpc.app.loanpayment.Repo.LoanRepo;
 import com.jmpc.app.loanpayment.models.Loan;
+import com.jmpc.app.loanpayment.service.LoanServiceImpl;
 
 @RestController
 @CrossOrigin
 public class LoanController {
 	
-	@Autowired 
-	private LoanRepo loanRepo;
-	
 	@Autowired
-	private CustomerRepo customerRepo;
+	private LoanServiceImpl loanService;
+	
 	
 	@GetMapping(value = "/loans/{id}")
 	public Loan getloan(@PathVariable("id") long id) {
-		return loanRepo.findById(id).orElse(null);
+		return loanService.getloan(id);
 	}
 
 	@GetMapping(value = "/loans")
 	public List<Loan> getLoans() {
-		try {
-			var result = loanRepo.findAll();
-			return result; 
-		}
-		catch (Exception e) {
-			return null;
-		}
+		return loanService.getLoans();
 	}
 	
 	@PostMapping(value = "saveloan")
 	public Loan saveLoan(@RequestBody Loan loan) {
-		var customer = customerRepo.findById(loan.customer.id).orElse(null);
-		loan.customer = customer;
-		return loanRepo.save(loan);
+		return loanService.saveLoan(loan);
 	}
 }
