@@ -12,12 +12,12 @@ import com.jmpc.app.loanpayment.models.Loan;
 @Service
 public class LoanServiceImpl {
 
-	@Autowired 
+	@Autowired
 	private LoanRepo loanRepo;
-	
+
 	@Autowired
 	private CustomerRepo customerRepo;
-	
+
 	public Loan getloan(long id) {
 		return loanRepo.findById(id).orElse(null);
 	}
@@ -25,13 +25,12 @@ public class LoanServiceImpl {
 	public List<Loan> getLoans() {
 		try {
 			var result = loanRepo.findAll();
-			return result; 
-		}
-		catch (Exception e) {
+			return result;
+		} catch (Exception e) {
 			return null;
 		}
 	}
-	
+
 	public Loan saveLoan(Loan loan) {
 		var customer = customerRepo.findById(loan.customer.id).orElse(null);
 		loan.customer = customer;

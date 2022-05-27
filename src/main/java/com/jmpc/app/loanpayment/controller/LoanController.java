@@ -16,11 +16,10 @@ import com.jmpc.app.loanpayment.service.LoanServiceImpl;
 @RestController
 @CrossOrigin
 public class LoanController {
-	
+
 	@Autowired
 	private LoanServiceImpl loanService;
-	
-	
+
 	@GetMapping(value = "/loans/{id}")
 	public Loan getloan(@PathVariable("id") long id) {
 		return loanService.getloan(id);
@@ -30,7 +29,7 @@ public class LoanController {
 	public List<Loan> getLoans() {
 		return loanService.getLoans();
 	}
-	
+
 	@PostMapping(value = "saveloan")
 	public Loan saveLoan(@RequestBody Loan loan) {
 		return loanService.saveLoan(loan);

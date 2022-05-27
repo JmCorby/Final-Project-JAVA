@@ -15,10 +15,10 @@ import com.jmpc.app.loanpayment.service.CustomerServiceImpl;
 @RestController
 @CrossOrigin
 public class CustomerController {
-	
+
 	@Autowired
 	private CustomerServiceImpl customerService;
-	
+
 	@GetMapping(value = "/customers")
 	public List<Customer> getCustomers() {
 		return customerService.getCustomers();
@@ -28,5 +28,4 @@ public class CustomerController {
 	public Customer getCustomerByName(@RequestBody Customer customer) {
 		return customerService.getCustomerByName(customer);
 	}
-
 }

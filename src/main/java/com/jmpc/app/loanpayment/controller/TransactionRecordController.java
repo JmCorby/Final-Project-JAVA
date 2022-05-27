@@ -16,7 +16,7 @@ import com.jmpc.app.loanpayment.service.TransactionRecordServiceImpl;
 @RestController
 @CrossOrigin
 public class TransactionRecordController {
-	
+
 	@Autowired
 	private TransactionRecordServiceImpl transactionRecordService;
 
@@ -24,9 +24,9 @@ public class TransactionRecordController {
 	public List<TransactionRecord> getTransactionRecordByLoanId(@PathVariable("loanId") long loanId) {
 		return transactionRecordService.getTransactionRecordByLoanId(loanId);
 	}
-	
+
 	@PostMapping(value = "/savetransaction")
-	public TransactionRecord saveTransactionRecord (@RequestBody TransactionRecord transactionRecord) {
+	public TransactionRecord saveTransactionRecord(@RequestBody TransactionRecord transactionRecord) {
 		return transactionRecordService.saveTransactionRecord(transactionRecord);
 	}
 }
